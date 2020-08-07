@@ -37,17 +37,17 @@ def TransformerEncoder(vocab_size,
                        max_len=2048,
                        mode='train',
                        ff_activation=tl.Relu):
-  """Returns a Transformer-style encoder.
+  """Returns a Transformer encoder merged with an N-way categorization head.
 
-  For each item in a batch, this model performs a sequence-to-sequence mapping:
+  For each item in a batch, this model performs a text-categorization-like
+  mapping:
 
     - input: sequence of integers, usually token id's from a fixed-size
       vocabulary -- integers in `range(M)`, where `M` is the vocabulary
       size.
 
-    - output:  same-length sequence of N-dimensional vectors, where each vector
-      can be interpreted as a log-probability distribution over N discrete
-      categories.
+    - output: N-dimensional vector, which can be interpreted as a
+      log-probability distribution over N discrete categories.
 
   Args:
     vocab_size: "Vocabulary size" -- input integer id's must be in
@@ -73,8 +73,8 @@ def TransformerEncoder(vocab_size,
         block.
 
   Returns:
-    A Transformer model as a layer that maps from token id's to activations
-    over a set of output classes.
+    A Transformer model (layer) that maps a sequence of token id's to
+    probability-like activations over a range of output classes.
   """
   positional_encoder = [
       tl.Embedding(vocab_size, d_model),
